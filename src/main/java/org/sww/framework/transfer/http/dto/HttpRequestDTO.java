@@ -1,4 +1,6 @@
 package org.sww.framework.transfer.http.dto;
 
-public class HttpRequestDTO {
+import org.sww.framework.transfer.dto.RequestDTO;
+
+public class HttpRequestDTO implements RequestDTO {
 }

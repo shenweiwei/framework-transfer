@@ -1,4 +1,6 @@
 package org.sww.framework.transfer.http.dto;
 
-public class HttpResposneDTO {
+import org.sww.framework.transfer.dto.ResponseDTO;
+
+public class HttpResposneDTO implements ResponseDTO {
 }

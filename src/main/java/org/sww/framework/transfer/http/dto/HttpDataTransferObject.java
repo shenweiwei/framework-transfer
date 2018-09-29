@@ -5,11 +5,13 @@ import java.io.Serializable;
 import org.apache.commons.lang3.ObjectUtils;
 import org.sww.framework.transfer.dto.AbstractDTO;
 import org.sww.framework.transfer.dto.DataTransferObject;
+import org.sww.framework.transfer.dto.RequestDTO;
+import org.sww.framework.transfer.dto.ResponseDTO;
 
 public class HttpDataTransferObject extends AbstractDTO implements Serializable, DataTransferObject {
 	private static final long serialVersionUID = -8072884079681809776L;
-	private HttpRequestDTO httpRequestDTO;
-	private HttpResposneDTO httpResposneDTO;
+	private RequestDTO httpRequestDTO;
+	private ResponseDTO httpResposneDTO;
 
 	public HttpDataTransferObject(Object httpRequestDTO, Object httpResposneDTO) {
 		if (ObjectUtils.allNotNull(httpRequestDTO))
@@ -17,17 +19,22 @@ public class HttpDataTransferObject extends AbstractDTO implements Serializable,
 		if (ObjectUtils.allNotNull(httpResposneDTO))
 			this.httpResposneDTO = (HttpResposneDTO) httpResposneDTO;
 	}
-	
-	public HttpRequestDTO getHttpRequestDTO() {
+
+	public RequestDTO getHttpRequestDTO() {
 		return httpRequestDTO;
 	}
-	public void setHttpRequestDTO(HttpRequestDTO httpRequestDTO) {
+
+	public void setHttpRequestDTO(RequestDTO httpRequestDTO) {
 		this.httpRequestDTO = httpRequestDTO;
 	}
-	public HttpResposneDTO getHttpResposneDTO() {
+
+	public ResponseDTO getHttpResposneDTO() {
 		return httpResposneDTO;
 	}
-	public void setHttpResposneDTO(HttpResposneDTO httpResposneDTO) {
+
+	public void setHttpResposneDTO(ResponseDTO httpResposneDTO) {
 		this.httpResposneDTO = httpResposneDTO;
 	}
+
+	
 }
