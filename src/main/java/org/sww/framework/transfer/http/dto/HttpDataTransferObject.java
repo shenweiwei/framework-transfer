@@ -3,7 +3,6 @@ package org.sww.framework.transfer.http.dto;
 import java.io.Serializable;
 
 import org.apache.commons.lang3.ObjectUtils;
-import org.springframework.lang.Nullable;
 import org.sww.framework.transfer.dto.AbstractDTO;
 import org.sww.framework.transfer.dto.DataTransferObject;
 
@@ -12,7 +11,7 @@ public class HttpDataTransferObject extends AbstractDTO implements Serializable,
 	private HttpRequestDTO httpRequestDTO;
 	private HttpResposneDTO httpResposneDTO;
 
-	public HttpDataTransferObject(@Nullable Object httpRequestDTO, @Nullable Object httpResposneDTO) {
+	public HttpDataTransferObject(Object httpRequestDTO, Object httpResposneDTO) {
 		if (ObjectUtils.allNotNull(httpRequestDTO))
 			this.httpRequestDTO = (HttpRequestDTO) httpRequestDTO;
 		if (ObjectUtils.allNotNull(httpResposneDTO))
