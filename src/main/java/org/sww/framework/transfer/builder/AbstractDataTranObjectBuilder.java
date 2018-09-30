@@ -1,10 +1,6 @@
 package org.sww.framework.transfer.builder;
 
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
-
 public abstract class AbstractDataTranObjectBuilder implements DataTranObjectBuilder {
-//	protected static Logger logger = LoggerFactory.getLogger(DataTranObjectBuilder.class);
 	protected Class<?> inputOfType;
 	protected Class<?> outputOfType;
 

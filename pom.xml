@@ -29,7 +29,6 @@
 	</dependencies>
 	<build>
 		<plugins>
-			<!-- 注意spring5 Java最低版本要求1.8 -->
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.5.1</version>
