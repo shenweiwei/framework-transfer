@@ -3,6 +3,7 @@ package org.sww.framework.transfer.http.dto;
 import java.io.Serializable;
 
 import org.apache.commons.lang3.ObjectUtils;
+import org.springframework.scheduling.annotation.AsyncResult;
 import org.sww.framework.transfer.dto.AbstractDTO;
 
 public class HttpDataTransferObject extends AbstractDTO implements Serializable {
@@ -13,6 +14,11 @@ public class HttpDataTransferObject extends AbstractDTO implements Serializable 
 			super.setInputDTO((HttpRequestDTO) httpRequestDTO);
 		if (ObjectUtils.allNotNull(httpResposneDTO))
 			super.setOutputDTO((HttpResposneDTO) httpResposneDTO);
+	}
+	
+	public void transferFinish() {
+		AsyncHttpResponseDTO asyncHttpResponseDTO = (AsyncHttpResponseDTO) super.getOutputDTO();
+		asyncHttpResponseDTO.setFuture(new AsyncResult<AsyncHttpResponseDTO>(asyncHttpResponseDTO));
 	}
 	
 }
