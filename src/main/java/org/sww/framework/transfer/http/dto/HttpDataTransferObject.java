@@ -12,62 +12,42 @@ import io.reactivex.Observable;
 
 public class HttpDataTransferObject extends AbstractDTO implements Serializable {
 	private static final long serialVersionUID = -8072884079681809776L;
-	private Observable<?> requestObservable;
-	private Observable<?> responseObservable;
+	private boolean isWatch;
 
 	public HttpDataTransferObject(Object httpRequestDTO, Object httpResposneDTO) {
-		if (ObjectUtils.allNotNull(httpRequestDTO)) {
-			this.requestObservable = this.create(httpRequestDTO);
-		}
-		if (ObjectUtils.allNotNull(httpResposneDTO)) {
-			this.responseObservable = this.create(httpResposneDTO);
-		}
+		if (ObjectUtils.allNotNull(httpRequestDTO))
+			super.setInputDTO((InputDTO) httpRequestDTO);
+		if (ObjectUtils.allNotNull(httpResposneDTO))
+			super.setOutputDTO((OutputDTO) httpResposneDTO);
 	}
-	private <T> Observable<T> create(T t) {
-		return Observable.create(observer -> {
-			observer.onNext(t);
-		});
-	}
-
 	public void transferFinish() {
 		AsyncHttpResponseDTO asyncHttpResponseDTO = (AsyncHttpResponseDTO) super.getOutputDTO();
 		asyncHttpResponseDTO.setFuture(new AsyncResult<AsyncHttpResponseDTO>(asyncHttpResponseDTO));
 	}
-
-	public void watch() {
-		subscribeHttpDTO(this.getRequestObservable(), this.getResponseObservable());
-	}
-
-	private void subscribeHttpDTO(Observable<?>... observables) {
+	private void subscribe(Observable<?>... observables) {
 		for (Observable<?> observable : observables) {
 			if (ObjectUtils.allNotNull(observable)) {
 				observable.subscribe(dto -> {
-					this.setDataAndWatchByDTOType(dto);
+					this.onWatch(dto);
 				});
 			}
 		}
 	}
-	
-	private void setDataAndWatchByDTOType(Object dto) {
-		if (dto instanceof HttpRequestDTO) {
-			super.setInputDTO((HttpRequestDTO) dto);
-			((HttpRequestDTO) super.getInputDTO()).watch((InputDTO) dto);
-		} else if (dto instanceof HttpResposneDTO) {
-			super.setOutputDTO((OutputDTO) dto);
-			((HttpResposneDTO) super.getOutputDTO()).watch((OutputDTO) dto);
+	public void onWatch(Object dto) {
+		if (dto instanceof InputDTO) {
+			InputDTO inputDTO = (InputDTO) dto;
+			inputDTO.watch(inputDTO);
+		} else if (dto instanceof OutputDTO) {
+			OutputDTO outputDTO = (OutputDTO) dto;
+			outputDTO.watch(outputDTO);
 		}
 	}
-	
-	public Observable<?> getRequestObservable() {
-		return requestObservable;
+	public boolean isWatch() {
+		return isWatch;
 	}
-	public void setRequestObservable(Observable<?> requestObservable) {
-		this.requestObservable = requestObservable;
-	}
-	public Observable<?> getResponseObservable() {
-		return responseObservable;
-	}
-	public void setResponseObservable(Observable<?> responseObservable) {
-		this.responseObservable = responseObservable;
+	public void setWatch(boolean isWatch) {
+		this.isWatch = isWatch;
+		if (this.isWatch)
+			this.subscribe(super.getInputObservable(), super.getOutputObservable());
 	}
 }
