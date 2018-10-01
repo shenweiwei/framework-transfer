@@ -1,8 +1,8 @@
 package org.sww.framework.transfer.dto;
 
 public abstract class AbstractDTO implements DataTransferObject{
-	protected InputDTO inputDTO;
-	protected OutputDTO outputDTO;
+	private InputDTO inputDTO;
+	private OutputDTO outputDTO;
 	
 	public InputDTO getInputDTO() {
 		return inputDTO;
