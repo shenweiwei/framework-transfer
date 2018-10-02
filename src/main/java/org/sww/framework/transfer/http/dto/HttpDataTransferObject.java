@@ -25,7 +25,7 @@ public class HttpDataTransferObject extends AbstractDTO implements HttpWatcher, 
 			super.setOutputDTO((OutputDTO) httpResposneDTO);
 		this.watchSubscribe();
 	}
-	public void transferFinish() {
+	public void transferFinish() throws Exception {
 		AsyncHttpResponseDTO asyncHttpResponseDTO = (AsyncHttpResponseDTO) super.getOutputDTO();
 		asyncHttpResponseDTO.setFuture(new AsyncResult<AsyncHttpResponseDTO>(asyncHttpResponseDTO));
 	}
@@ -52,7 +52,6 @@ public class HttpDataTransferObject extends AbstractDTO implements HttpWatcher, 
 		if (dto instanceof OutputDTO)
 			super.setOutputDTO((OutputDTO) dto);
 	}
-	
 	public boolean isInputWatch() {
 		return isInputWatch;
 	}
@@ -85,6 +84,4 @@ public class HttpDataTransferObject extends AbstractDTO implements HttpWatcher, 
 		super.setOutputDTO(outputDTO);
 		watchSubject.onNext(outputDTO);
 	}
-	
-	
 }
