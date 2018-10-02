@@ -7,47 +7,84 @@ import org.springframework.scheduling.annotation.AsyncResult;
 import org.sww.framework.transfer.dto.AbstractDTO;
 import org.sww.framework.transfer.dto.InputDTO;
 import org.sww.framework.transfer.dto.OutputDTO;
+import org.sww.framework.transfer.http.plugin.HttpWatcher;
 
 import io.reactivex.Observable;
+import io.reactivex.subjects.PublishSubject;
 
-public class HttpDataTransferObject extends AbstractDTO implements Serializable {
+public class HttpDataTransferObject extends AbstractDTO implements HttpWatcher, Serializable {
 	private static final long serialVersionUID = -8072884079681809776L;
-	private boolean isWatch;
+	private boolean isInputWatch;
+	private boolean isOutputWatch;
+	private PublishSubject<Object> watchSubject = PublishSubject.create();
 
 	public HttpDataTransferObject(Object httpRequestDTO, Object httpResposneDTO) {
 		if (ObjectUtils.allNotNull(httpRequestDTO))
 			super.setInputDTO((InputDTO) httpRequestDTO);
 		if (ObjectUtils.allNotNull(httpResposneDTO))
 			super.setOutputDTO((OutputDTO) httpResposneDTO);
+		this.watchSubscribe();
 	}
 	public void transferFinish() {
 		AsyncHttpResponseDTO asyncHttpResponseDTO = (AsyncHttpResponseDTO) super.getOutputDTO();
 		asyncHttpResponseDTO.setFuture(new AsyncResult<AsyncHttpResponseDTO>(asyncHttpResponseDTO));
 	}
-	private void subscribe(Observable<?>... observables) {
-		for (Observable<?> observable : observables) {
-			if (ObjectUtils.allNotNull(observable)) {
-				observable.subscribe(dto -> {
-					this.onWatch(dto);
-				});
-			}
-		}
-	}
+	@Override
 	public void onWatch(Object dto) {
-		if (dto instanceof InputDTO) {
+		if (isInputWatch && dto instanceof InputDTO) {
 			InputDTO inputDTO = (InputDTO) dto;
 			inputDTO.watch(inputDTO);
-		} else if (dto instanceof OutputDTO) {
+		}
+		if (isOutputWatch && dto instanceof OutputDTO) {
 			OutputDTO outputDTO = (OutputDTO) dto;
 			outputDTO.watch(outputDTO);
 		}
 	}
-	public boolean isWatch() {
-		return isWatch;
+	@Override
+	public Observable<Object> doOnNext() {
+		return watchSubject.doOnNext(dto -> {
+			this.setHttpDTO(dto);
+		});
 	}
-	public void setWatch(boolean isWatch) {
-		this.isWatch = isWatch;
-		if (this.isWatch)
-			this.subscribe(super.getInputObservable(), super.getOutputObservable());
+	private void setHttpDTO(Object dto) {
+		if (dto instanceof InputDTO)
+			super.setInputDTO((InputDTO) dto);
+		if (dto instanceof OutputDTO)
+			super.setOutputDTO((OutputDTO) dto);
 	}
+	
+	public boolean isInputWatch() {
+		return isInputWatch;
+	}
+	public void setInputWatch(boolean isInputWatch) {
+		this.isInputWatch = isInputWatch;
+		this.setInputDTO(super.getInputDTO());
+	}
+	public boolean isOutputWatch() {
+		return isOutputWatch;
+	}
+	public void setOutputWatch(boolean isOutputWatch) {
+		this.isOutputWatch = isOutputWatch;
+		this.setOutputDTO(super.getOutputDTO());
+	}
+	public PublishSubject<Object> getWatchSubject() {
+		return watchSubject;
+	}
+	public void setWatchSubject(PublishSubject<Object> watchSubject) {
+		this.watchSubject = watchSubject;
+	}
+	@Override
+	public void setInputDTO(InputDTO inputDTO) {
+		// TODO Auto-generated method stub
+		super.setInputDTO(inputDTO);
+		watchSubject.onNext(inputDTO);
+	}
+	@Override
+	public void setOutputDTO(OutputDTO outputDTO) {
+		// TODO Auto-generated method stub
+		super.setOutputDTO(outputDTO);
+		watchSubject.onNext(outputDTO);
+	}
+	
+	
 }
