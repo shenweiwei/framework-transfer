@@ -3,7 +3,6 @@ package org.sww.framework.transfer.http.dto;
 import java.io.Serializable;
 
 import org.apache.commons.lang3.ObjectUtils;
-import org.springframework.scheduling.annotation.AsyncResult;
 import org.sww.framework.transfer.dto.AbstractDTO;
 import org.sww.framework.transfer.dto.InputDTO;
 import org.sww.framework.transfer.dto.OutputDTO;
@@ -25,10 +24,7 @@ public class HttpDataTransferObject extends AbstractDTO implements HttpWatcher, 
 			super.setOutputDTO((OutputDTO) httpResposneDTO);
 		this.watchSubscribe();
 	}
-	public void transferFinish() throws Exception {
-		AsyncHttpResponseDTO asyncHttpResponseDTO = (AsyncHttpResponseDTO) super.getOutputDTO();
-		asyncHttpResponseDTO.setFuture(new AsyncResult<AsyncHttpResponseDTO>(asyncHttpResponseDTO));
-	}
+
 	@Override
 	public void onWatch(Object dto) {
 		if (isInputWatch && dto instanceof InputDTO) {
