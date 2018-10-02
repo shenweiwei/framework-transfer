@@ -6,7 +6,12 @@ public class HttpRequestDTO implements InputDTO {
 
 	@Override
 	public void watch(InputDTO currentInputDTO) {
-		System.out.println(123123);
-		
+		System.out.println(this.toString());
 	}
+
+	@Override
+	public String toString() {
+		return "HttpRequestDTO [toString()=" + super.toString() + "]";
+	}
+
 }

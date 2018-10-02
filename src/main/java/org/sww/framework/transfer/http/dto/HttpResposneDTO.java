@@ -21,8 +21,11 @@ public class HttpResposneDTO implements OutputDTO {
 	
 	@Override
 	public void watch(OutputDTO currentOutputDTO) {
-		System.out.println(222222);
-		
+		System.out.println(this.toString());
+	}
+	@Override
+	public String toString() {
+		return "HttpResposneDTO [code=" + code + ", message=" + message + "]";
 	}
 
 }
