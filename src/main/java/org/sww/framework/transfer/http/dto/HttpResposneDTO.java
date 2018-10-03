@@ -2,7 +2,7 @@ package org.sww.framework.transfer.http.dto;
 
 import org.sww.framework.transfer.dto.OutputDTO;
 
-public class HttpResposneDTO implements OutputDTO {
+public class HttpResposneDTO<T> implements OutputDTO<T> {
 	private String code;
 	private String message;
 
@@ -20,7 +20,7 @@ public class HttpResposneDTO implements OutputDTO {
 	}
 	
 	@Override
-	public void watch(OutputDTO currentOutputDTO) {
+	public void watch(OutputDTO<T> currentOutputDTO) {
 		System.out.println(this.toString());
 	}
 	@Override

@@ -8,7 +8,7 @@ public interface HttpWatcher {
 	Observable<Object> doOnNext();
 	
 	default Disposable watchSubscribe() {
-		return this.doOnNext().subscribe(dto -> {
+		return this.doOnNext().subscribe((dto) -> {
 			this.onWatch(dto);
 		});
 	}
