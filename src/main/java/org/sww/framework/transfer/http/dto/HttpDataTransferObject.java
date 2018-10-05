@@ -11,13 +11,13 @@ import org.sww.framework.transfer.http.plugin.HttpWatcher;
 import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
 
-public class HttpDataTransferObject<I, O> extends AbstractDTO<I, O> implements HttpWatcher, Serializable {
+public class HttpDataTransferObject extends AbstractDTO implements HttpWatcher, Serializable {
 	private static final long serialVersionUID = -8072884079681809776L;
 	private boolean isInputWatch;
 	private boolean isOutputWatch;
 	private PublishSubject<Object> watchSubject = PublishSubject.create();
 
-	public HttpDataTransferObject(InputDTO<I> httpRequestDTO, OutputDTO<O> httpResposneDTO) {
+	public HttpDataTransferObject(InputDTO httpRequestDTO, OutputDTO httpResposneDTO) {
 		if (ObjectUtils.allNotNull(httpRequestDTO))
 			super.setInputDTO(httpRequestDTO);
 		
@@ -25,15 +25,15 @@ public class HttpDataTransferObject<I, O> extends AbstractDTO<I, O> implements H
 			super.setOutputDTO(httpResposneDTO);
 		this.watchSubscribe();
 	}
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void onWatch(Object dto) {
 		if (isInputWatch && dto instanceof InputDTO) {
-			InputDTO<I> inputDTO = ((InputDTO<I>) dto);
-			inputDTO.watch(((InputDTO<I>) dto));
+			InputDTO inputDTO = ((InputDTO) dto);
+			inputDTO.watch(((InputDTO) dto));
 		}
 		if (isOutputWatch && dto instanceof OutputDTO) {
-			OutputDTO<O> outputDTO = (OutputDTO<O>) dto;
+			OutputDTO outputDTO = (OutputDTO) dto;
 			outputDTO.watch(outputDTO);
 		}
 	}
@@ -43,7 +43,7 @@ public class HttpDataTransferObject<I, O> extends AbstractDTO<I, O> implements H
 			this.setHttpDTO(dto);
 		});
 	}
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	
 	private void setHttpDTO(Object dto) {
 		if (dto instanceof InputDTO)
 			super.setInputDTO((InputDTO) dto);
@@ -71,13 +71,13 @@ public class HttpDataTransferObject<I, O> extends AbstractDTO<I, O> implements H
 		this.watchSubject = watchSubject;
 	}
 	@Override
-	public void setInputDTO(InputDTO<I> inputDTO) {
+	public void setInputDTO(InputDTO inputDTO) {
 		// TODO Auto-generated method stub
 		super.setInputDTO(inputDTO);
 		watchSubject.onNext(inputDTO);
 	}
 	@Override
-	public void setOutputDTO(OutputDTO<O> outputDTO) {
+	public void setOutputDTO(OutputDTO outputDTO) {
 		// TODO Auto-generated method stub
 		super.setOutputDTO(outputDTO);
 		watchSubject.onNext(outputDTO);

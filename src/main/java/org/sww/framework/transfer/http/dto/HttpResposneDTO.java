@@ -1,31 +1,42 @@
-package org.sww.framework.transfer.http.dto;
+package org.sww.framework.transfer.http.dto ;
 
-import org.sww.framework.transfer.dto.OutputDTO;
+import org.sww.framework.transfer.dto.OutputDTO ;
 
-public class HttpResposneDTO<T> implements OutputDTO<T> {
-	private String code;
-	private String message;
-
+public class HttpResposneDTO implements OutputDTO {
+	
+	private String	code ;
+	private String	message ;
+	
 	public String getCode() {
-		return code;
+		return code ;
 	}
-	public void setCode(String code) {
-		this.code = code;
+	
+	public HttpResposneDTO setCode(String code) {
+		this.code = code ;
+		return this ;
 	}
+	
 	public String getMessage() {
-		return message;
+		return message ;
 	}
-	public void setMessage(String message) {
-		this.message = message;
+	
+	public HttpResposneDTO setMessage(String message) {
+		this.message = message ;
+		return this ;
+	}
+	
+	public static HttpResposneDTO create() {
+		return new HttpResposneDTO() ;
 	}
 	
 	@Override
-	public void watch(OutputDTO<T> currentOutputDTO) {
-		System.out.println(this.toString());
+	public void watch(OutputDTO currentOutputDTO) {
+		System.out.println(this.toString()) ;
 	}
+	
 	@Override
 	public String toString() {
-		return "HttpResposneDTO [code=" + code + ", message=" + message + "]";
+		return "HttpResposneDTO [code=" + code + ", message=" + message + "]" ;
 	}
-
+	
 }

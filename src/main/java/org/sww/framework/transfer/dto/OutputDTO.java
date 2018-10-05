@@ -1,6 +1,6 @@
 package org.sww.framework.transfer.dto;
 
-public interface OutputDTO<T> {
+public interface OutputDTO {
 	
-	void watch(OutputDTO<T> currentOutputDTO);
+	void watch(OutputDTO currentOutputDTO);
 }

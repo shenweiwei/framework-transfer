@@ -2,10 +2,10 @@ package org.sww.framework.transfer.http.dto;
 
 import org.sww.framework.transfer.dto.InputDTO;
 
-public class HttpRequestDTO<T> implements InputDTO<T> {
+public class HttpRequestDTO implements InputDTO {
 
 	@Override
-	public void watch(InputDTO<T> currentInputDTO) {
+	public void watch(InputDTO currentInputDTO) {
 		System.out.println(this.toString());
 	}
 
